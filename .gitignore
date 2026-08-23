@@ -8,8 +8,7 @@ venv/
 results/
 results_b2/
 *.json
-!fig_b2.json
-!fig_plateau.json
+!cstopo3/data/*.json
 *.log
 slurm-*.out
 
