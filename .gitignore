@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# run outputs
+results/
+results_b2/
+*.json
+!fig_b2.json
+!fig_plateau.json
+*.log
+slurm-*.out
+
+.DS_Store
+.idea/
+.vscode/

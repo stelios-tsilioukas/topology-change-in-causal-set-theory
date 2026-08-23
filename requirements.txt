@@ -1,0 +1,7 @@
+# cstopo3/ and cstopo/ need numpy alone.
+numpy>=1.24
+
+# Parts of verification/ additionally need:
+scipy>=1.10      # alpha_dep, bd_diag, csg, earlyde, gs, higgs, higgs_fix,
+                 # nh_check, pathint, rfix
+gudhi>=3.8       # alpha2, cobordism2, confirm, flowtest, kappa, kappa2, slicefix

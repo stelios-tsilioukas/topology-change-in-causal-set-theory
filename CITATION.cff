@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the accompanying paper."
+title: "Topology change in Causal Set Theory"
+abstract: >-
+  Numerical demonstration that a change of spatial topology is recoverable from
+  the causal order alone in 2+1 and 3+1 dimensions, together with the checks
+  supporting the analytic claims of the accompanying paper on the Gauss-Bonnet
+  term in causal set theory.
+authors:
+  - family-names: Tsilioukas
+    given-names: Stylianos A.
+    affiliation: "University of Thessaly; National Observatory of Athens"
+license: MIT
+repository-code: "https://github.com/USERNAME/topology-change-in-causal-set-theory"
+keywords:
+  - causal set theory
+  - topology change
+  - Gauss-Bonnet
+  - cosmological constant
+  - quantum gravity
