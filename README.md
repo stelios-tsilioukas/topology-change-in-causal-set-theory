@@ -41,7 +41,7 @@ answer is known independently.
 ## Install
 
 ```bash
-git clone https://github.com/<user>/topology-change-in-causal-set-theory.git
+git clone https://github.com/stelios-tsilioukas/topology-change-in-causal-set-theory.git
 cd topology-change-in-causal-set-theory
 pip install -r requirements.txt
 ```
