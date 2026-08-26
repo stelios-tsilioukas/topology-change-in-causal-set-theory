@@ -1,0 +1,24 @@
+{"lam": 0.55, "neck": 1.5, "N": 80000, "cap": 12, "nL": 150, "seed": 1, "betti": [1, 1, 0], "ok": false, "wall": 91.2, "peak_GB": 0.208}
+{"lam": 0.85, "neck": 1.5, "N": 80000, "cap": 12, "nL": 150, "seed": 1, "betti": [1, 1, 1], "ok": true, "wall": 101.3, "peak_GB": 0.241}
+{"lam": 0.55, "neck": 1.5, "N": 80000, "cap": 12, "nL": 150, "seed": 2, "betti": [1, 1, 0], "ok": false, "wall": 86.4, "peak_GB": 0.214}
+{"lam": 0.85, "neck": 1.5, "N": 80000, "cap": 12, "nL": 150, "seed": 2, "betti": [1, 1, 1], "ok": true, "wall": 114.5, "peak_GB": 0.246}
+{"lam": 0.55, "neck": 1.5, "N": 80000, "cap": 12, "nL": 150, "seed": 3, "betti": [1, 1, 0], "ok": false, "wall": 90.6, "peak_GB": 0.212}
+{"lam": 0.85, "neck": 1.5, "N": 80000, "cap": 12, "nL": 150, "seed": 3, "betti": [1, 1, 1], "ok": true, "wall": 120.2, "peak_GB": 0.242}
+{"lam": 0.7, "neck": 1.5, "N": 80000, "cap": 12, "nL": 150, "seed": 1, "betti": [1, 1, 1], "ok": true, "wall": 114.8, "peak_GB": 0.227}
+{"lam": 1.0, "neck": 1.5, "N": 80000, "cap": 12, "nL": 150, "seed": 1, "betti": [1, 1, 2], "ok": false, "wall": 145.8, "peak_GB": 0.256}
+{"lam": 0.7, "neck": 1.5, "N": 80000, "cap": 12, "nL": 150, "seed": 2, "betti": [1, 1, 1], "ok": true, "wall": 117.1, "peak_GB": 0.228}
+{"geom": "surgery", "N": 80000, "cap": 12, "nL": 150, "seed": 2, "betti": [1, 1, 0], "raw3": 1033776, "wall": 75.6, "peak_GB": 0.193, "note": ""}
+{"geom": "surgery", "N": 80000, "cap": 12, "nL": 150, "seed": 1, "betti": [1, 1, 0], "raw3": 988765, "wall": 85.7, "peak_GB": 0.194, "note": ""}
+{"geom": "surgery", "N": 80000, "cap": 12, "nL": 150, "seed": 4, "betti": [1, 1, 0], "raw3": 999523, "wall": 68.9, "peak_GB": 0.187, "note": ""}
+{"geom": "surgery", "N": 80000, "cap": 12, "nL": 150, "seed": 3, "betti": [1, 1, 0], "raw3": 972503, "wall": 71.3, "peak_GB": 0.193, "note": ""}
+{"geom": "surgery", "N": 80000, "cap": 12, "nL": 150, "seed": 6, "betti": [1, 1, 0], "raw3": 1011903, "wall": 78.5, "peak_GB": 0.193, "note": ""}
+{"geom": "surgery", "N": 80000, "cap": 12, "nL": 150, "seed": 5, "betti": [1, 1, 0], "raw3": 1020962, "wall": 91.9, "peak_GB": 0.193, "note": ""}
+{"geom": "surgery", "N": 80000, "cap": 12, "nL": 150, "seed": 8, "betti": [1, 1, 1], "raw3": 1050665, "wall": 72.6, "peak_GB": 0.193, "note": ""}
+{"geom": "surgery", "N": 80000, "cap": 12, "nL": 150, "seed": 7, "betti": [1, 1, 0], "raw3": 1043516, "wall": 79.0, "peak_GB": 0.193, "note": ""}
+{"geom": "S3warped", "N": 80000, "cap": 12, "nL": 150, "seed": 1, "betti": [1, 0, 0], "raw3": 832641, "wall": 94.4, "peak_GB": 0.203, "note": ""}
+{"geom": "S3warped", "N": 40000, "cap": 14, "nL": 150, "seed": 1, "betti": [1, 0, 0], "raw3": 882313, "wall": 160.3, "peak_GB": 0.277, "note": ""}
+{"geom": "S3warped", "N": 80000, "cap": 12, "nL": 150, "seed": 2, "betti": [1, 0, 0], "raw3": 874573, "wall": 93.7, "peak_GB": 0.211, "note": ""}
+{"geom": "S3warped", "N": 80000, "cap": 12, "nL": 150, "seed": 3, "betti": [1, 0, 0], "raw3": 875680, "wall": 77.8, "peak_GB": 0.2, "note": ""}
+{"geom": "S3warped", "N": 40000, "cap": 14, "nL": 150, "seed": 2, "betti": [1, 0, 0], "raw3": 952972, "wall": 161.3, "peak_GB": 0.284, "note": ""}
+{"geom": "S3warped", "N": 40000, "cap": 14, "nL": 150, "seed": 3, "betti": [1, 0, 0], "raw3": 940344, "wall": 161.5, "peak_GB": 0.28, "note": ""}
+{"geom": "S3", "cap": 18, "nL": 250, "seed": 1, "betti": [1, 0, 1], "raw3": 1290621, "wall": 827.8, "peak_GB": 1.083, "note": ""}

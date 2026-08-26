@@ -102,40 +102,52 @@ already, and at 8 000, 15 000, 30 000. Far below the paper's estimate.
 
 ## 4. What does NOT work
 
-**b₂ is not converged.** This is the honest negative result, and it constrains
-what can be claimed.
+**b₂ is now converged, and Δβ is measured in every component.** This section
+previously recorded b₂ as the outstanding negative result. It is resolved; the
+history is kept below because the diagnosis is the useful part.
 
-`b₂` needs the 3-simplices and no cycle-space shortcut exists. It converges with
-cap, but slowly and expensively (S³, N = 20 000, |L| = 250; correct value 0):
+The original approach pushed `cap` upward at `|L| = 250`, which is expensive and
+does not get there:
 
-| cap | 10 | 12 | 14 | 16 |
-|---|---|---|---|---|
-| b₂ | 42 | 26 | 6 | 3 |
-| raw 3-simplices | 68 270 | 171 395 | 383 321 | 710 921 |
-| wall | 5 s | 19 s | 67 s | 198 s |
+| cap | 10 | 12 | 14 | 16 | 18 |
+|---|---|---|---|---|---|
+| b₂ (S³, N = 2e4, \|L\| = 250) | 42 | 26 | 6 | 3 | 1 |
+| wall | 8 s | 30 s | 107 s | 262 s | 828 s |
 
-Clean trend to zero; cap ≈ 18–20 should reach it. **That is the cluster job.**
+`cap` was the wrong knob. At a **coarser** landmark set the complex is more
+solid in dimension 3 at the same cap, because `r/s` is larger. At
+`N = 4e4, |L| = 150, cap = 12` the static slices come out exact and cheap:
 
-Counter-intuitively, a *denser* landmark set makes b₂ worse, because at fixed cap
-more landmarks means a smaller `r/s` and a less solid complex (S³, cap 12):
-`|L| = 150 → b₂ = 0` (correct), `250 → 15`, `400 → 54`.
+    S^3     -> (1,0,0)   3/3    45 s
+    S^1xS^2 -> (1,1,1)   3/3    76 s
 
-At that sweet spot the **full** Betti vector comes out right, with exact metrics,
-N = 40 000, |L| = 150, cap = 12: **S³ → (1,0,0) 4/4** and
-**S¹×S² → (1,1,1) 4/4** (~55 s per slice).
+Two further things were needed for the cobordism.
 
-**But not for the surgery model.** With the warped/approximate metric the same
-parameters give b₂ ∈ {0,1,2} — unstable. So:
+**The 2-cycle needs a throat that is not too thin.** The 2-cycle is the throat's
+S², and a thin throat is filled in by the cover, giving β = (1,1,0) — a solid
+torus — stably rather than noisily:
 
-- **b₀, b₁: established.** Exact metrics, warped metrics, and the cobordism, all 8/8.
-- **b₂: established for the exact static slices only.** Not for the surgery model
-  at reachable resolution.
+| λ | 0.40 | 0.55 | 0.70 | 0.85 | 1.00 |
+|---|---|---|---|---|---|
+| after-slice β | (1,1,0) | (1,1,0) | **(1,1,1)** | **(1,1,1)** | (1,1,2) |
 
-Since `b₂ = b₁` on a closed orientable 3-manifold by Poincaré duality, and
-`b₃ = b₀`, **b₁ is already the discriminating observable** — the paper's
-Δβ = (0,+1,+1,0) follows from Δb₁ = +1 plus duality. The paper reports it that way,
-with the b₂ convergence as a separate, partially-completed check. A directly
-measured (0,+1,+1,0) is not yet supported.
+This is the b₂ analogue of the short-fat-handle failure already known for b₁,
+and like it, it is geometry rather than a bug. The two constraints are
+compatible because the 1-cycle length is `2·neck + π`, independent of λ: a long
+neck keeps b₁, a fat throat keeps b₂.
+
+**A cobordism splits the slab, so each slice sees only a fraction of N.** At
+N = 8e4 the after-slice is already exact while the before-slice still returns
+b₂ = 1 to 12. N = 2e5 fixes it.
+
+At `N = 2e5, |L| = 150, cap = 12, λ = 0.80, neck = 1.5`:
+
+    before = (1,0,0)    after = (1,1,1)    Δβ = (0,+1,+1)    3/3
+    206 s per seed on one core, 0.31 GB peak
+
+so Δβ = (0,+1,+1,0) is now measured directly rather than resting on Poincaré
+duality. Run `bash tower_b2.sh` for the whole programme; it needs a workstation,
+not a cluster.
 
 **Two further limitations, stated plainly.**
 
@@ -162,19 +174,16 @@ bash tower_run.sh            # self-test, scaling, plateau, 128-seed cobordism,
 
 Memory is a non-issue: the largest b₀/b₁ run measured used 0.10 GB.
 
-**On the cluster (32-cpu nodes) — b₂ only:**
+**b₂ (also the tower, no cluster needed):**
 
 ```
-sbatch slurm_array.sh        # 2 geometries x caps 14,16,18,20 x 8 seeds
-python3 run_b2.py --merge results_b2/
+bash tower_b2.sh             # static convergence, the |L| plateau, the throat
+                             # window, and Delta beta measured in every component
 ```
 
-Budget ~1 h wall on 32 tasks; the array is sized for 2 runs per task and cap 20
-is the expensive one at ~1400 s. **Do not spend cluster time on b₀/b₁** — the
-tower does 128 seeds in about two minutes.
-
-If b₂ flattens above zero rather than reaching 0 and 1, the next knob is a
-*smaller* |L| at the same cap, not a larger N.
+`slurm_array.sh` is kept for reference. It pushes `cap` to 18-20 at |L| = 250,
+which is the expensive route that does not converge; see section 4. Do not
+spend cluster time on it.
 
 ## 6. Layout
 
@@ -189,7 +198,8 @@ cstopo3/
   test_all.py     5 groups, ~25 checks; run first
   run_static.py   static plateau + --scaling
   run_cobordism.py the headline result; job-array and multiprocessing
-  run_b2.py       b2 convergence; the cluster job
+  run_b2.py       b2 convergence (static slices)
+  tower_b2.sh     the b2 programme -- a workstation, not a cluster
   tower_run.sh    the whole tower programme
   slurm_array.sh  the cluster array
 ```

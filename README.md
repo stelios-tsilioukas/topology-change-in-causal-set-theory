@@ -30,7 +30,7 @@ causal relation, and never again.
 
 | directory | what it is | hardware |
 |---|---|---|
-| [`cstopo3/`](cstopo3/) | the 3+1D demonstration: the wormhole-sector transition | laptop for b₀/b₁; cluster for b₂ |
+| [`cstopo3/`](cstopo3/) | the 3+1D demonstration: the wormhole-sector transition | laptop; workstation for b₂ |
 | [`cstopo/`](cstopo/) | the 2+1D demonstration: the trousers, where b₁ is directly meaningful | laptop |
 | [`verification/`](verification/) | the one-off checks behind individual claims in the paper | laptop |
 
@@ -121,14 +121,20 @@ b₀ and b₁: the largest run measured used 0.10 GB.
 
 Stated plainly, because it constrains what the paper claims.
 
-**b₂ is converging, not converged.** It needs the 3-simplices and admits no
-cycle-space shortcut. For S³ at N = 2×10⁴, |L| = 250 the median falls as
-b₂ = 42, 26, 6, 3 for cap = 10, 12, 14, 16 — a clean trend to the correct 0, but
-reaching it needs cap ≈ 18–20, which is the cluster job in
-[`cstopo3/slurm_array.sh`](cstopo3/slurm_array.sh). Since b₂ = b₁ and b₃ = b₀ on
-a closed orientable 3-manifold, Δb₁ = +1 already implies Δβ = (0,+1,+1,0); the
-paper reports the vector as resting on Δb₁ **plus Poincaré duality**, not on a
-direct measurement of every component.
+**b₂ is converged** (resolved after the first release; see
+[`cstopo3/README.md`](cstopo3/README.md) §4). The full Betti vector is measured
+on both sides of the transition,
+
+    before = (1,0,0)    after = (1,1,1)    Δβ = (0,+1,+1)
+
+at `N = 2×10⁵, |L| = 150, cap = 12, λ = 0.80, neck = 1.5`, in 206 s per seed on
+one core and 0.31 GB. Poincaré duality is no longer a premise of
+Δβ = (0,+1,+1,0); it is a consistency check the measured vectors satisfy. The
+route that failed was raising `cap` at fixed `|L|`; the knob that works is a
+*coarser* landmark set, plus a throat radius in the window λ ≈ 0.70–0.85, since
+a thin throat has its 2-cycle filled in by the cover. Run
+[`cstopo3/tower_b2.sh`](cstopo3/tower_b2.sh) — it needs a workstation, not a
+cluster.
 
 **The observable never uses a cross-split relation.** The before- and
 after-slice witness windows lie entirely on their own side of `t_split`. What is
@@ -235,9 +241,11 @@ manifold-like.
 `cstopo3/tower_run.sh` is the full programme for a 10-core workstation (roughly
 one to two hours): self-test, cost scaling, the resolution plateau, a 128-seed
 cobordism, large-N checks, the (λ, neck) sweep, and b₂ to cap 16.
-`cstopo3/slurm_array.sh` is the cluster job that takes b₂ to cap 18–20, which is
-the one open numerical question. Do not spend cluster time on b₀/b₁: a
-workstation does 128 seeds in about two minutes.
+`cstopo3/tower_b2.sh` is the b₂ programme: static convergence, the `|L|`
+plateau, the throat-radius window, and Δβ measured in every component. It also
+fits on the same workstation. `slurm_array.sh` is kept for reference only — it
+pushes `cap` to 18–20 at `|L| = 250`, which is the expensive route that does not
+converge. No part of this repository needs a cluster.
 
 ## License
 
