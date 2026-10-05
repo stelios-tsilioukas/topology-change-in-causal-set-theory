@@ -47,7 +47,9 @@ pip install -r requirements.txt
 ```
 
 `cstopo3` and `cstopo` need **numpy only**. Parts of `verification/` also use
-scipy and GUDHI; see [requirements.txt](requirements.txt).
+SciPy, GUDHI and SymPy; see [requirements.txt](requirements.txt). Python 3.9 or
+later. `mpi4py` is optional and is needed only to distribute seeds with `--mpi`;
+every script runs without it.
 
 ## Run
 
@@ -246,6 +248,32 @@ plateau, the throat-radius window, and Δβ measured in every component. It also
 fits on the same workstation. `slurm_array.sh` is kept for reference only — it
 pushes `cap` to 18–20 at `|L| = 250`, which is the expensive route that does not
 converge. No part of this repository needs a cluster.
+
+## Reproducibility
+
+Everything here runs on one core of an ordinary machine; no part of the
+repository needs a cluster. Last verified on a clean checkout with Python 3.11
+and the pinned minimum versions:
+
+| suite | result |
+|---|---|
+| `cstopo3/test_all.py` | all tests pass, ~2 min |
+| `cstopo/test_all.py` | all tests pass, seconds |
+| `verification/` (40 scripts) | all run to completion |
+
+Six of the verification scripts take minutes rather than seconds, by nature
+rather than by defect: `bd_diag`, `bd_full` and `bd_handle` sprinkle and count
+intervals at O(N²); `flowtest` and `flowtest2` sweep a persistence computation;
+`delta_beta_search` is an exhaustive search over small causal sets.
+
+`verification/paper_numbers.py` reproduces every table and derived number in the
+paper and is the quickest way to check an installation end to end.
+
+## Citing
+
+If you use this code, please cite the accompanying paper. Machine-readable
+metadata is in [CITATION.cff](CITATION.cff); GitHub renders it under *Cite this
+repository* in the sidebar.
 
 ## License
 

@@ -1,7 +1,13 @@
-# cstopo3/ and cstopo/ need numpy alone.
+# Core: cstopo3/ and cstopo/ need numpy alone.
 numpy>=1.24
 
-# Parts of verification/ additionally need:
-scipy>=1.10      # alpha_dep, bd_diag, csg, earlyde, gs, higgs, higgs_fix,
+# verification/ additionally needs:
+scipy>=1.10      # alpha_dep, bd_diag, csg, csg3, earlyde, gs, higgs, higgs_fix,
                  # nh_check, pathint, rfix
-gudhi>=3.8       # alpha2, cobordism2, confirm, flowtest, kappa, kappa2, slicefix
+gudhi>=3.8       # alpha2, cobordism2, confirm, flowtest, flowtest2, kappa,
+                 # kappa2, slicefix
+sympy>=1.12      # nariai, skeleton_checks
+
+# Optional. Only needed to distribute seeds with --mpi; every script runs
+# without it, using a job array or multiprocessing instead.
+# mpi4py>=3.1
