@@ -88,7 +88,7 @@ def main():
     if a.merge:
         rows = []
         for fn in sorted(os.listdir(a.merge)):
-            if fn.endswith(".json"):
+            if fn.startswith("b2_") and fn.endswith(".json"):
                 rows += json.load(open(os.path.join(a.merge, fn)))["rows"]
         print(f"merged {len(rows)} runs\n")
         print(f"{'geom':>9} {'cap':>4} {'n':>3} {'b2 values':>28} {'ok':>6} {'mean wall':>10}")
@@ -124,7 +124,8 @@ def main():
 
     if a.out:
         os.makedirs(a.out, exist_ok=True)
-        fn = os.path.join(a.out, f"b2_task{a.task:04d}.json")
+        tag = f"N{a.N}_L{a.nL}_" + "-".join(str(c) for c in a.caps)
+        fn = os.path.join(a.out, f"b2_{tag}_task{a.task:04d}.json")
         json.dump(dict(config=vars(a), rows=rows), open(fn, "w"), indent=1)
         print(f"  wrote {fn}")
 

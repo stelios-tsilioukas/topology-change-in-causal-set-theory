@@ -16,7 +16,7 @@
 # ---------------------------------------------------------------------------
 set -euo pipefail
 P=9                     # leave one core for the desktop
-mkdir -p results_b2
+mkdir -p results_b2/static results_b2/plateau results_b2/throat results_b2/final
 
 echo "############ 0. self-test ############"
 python3 test_all.py
@@ -26,7 +26,7 @@ echo "############ 1. b2 converges for the static slices ############"
 # The correct answers are S^3 -> (1,0,0) and S^1xS^2 -> (1,1,1).
 # Both come out exact here; ~45-80 s per run.
 python3 run_b2.py --geoms S3 S1xS2 --N 40000 --nL 150 --caps 12 \
-    --seeds 8 --procs $P --out results_b2/
+    --seeds 8 --procs $P --out results_b2/static/
 
 echo
 echo "############ 2. the resolution plateau in |L| ############"
@@ -34,7 +34,7 @@ echo "############ 2. the resolution plateau in |L| ############"
 for nl in 120 150 200 250; do
   echo "--- |L| = $nl ---"
   python3 run_b2.py --geoms S3 --N 40000 --nL $nl --caps 12 14 \
-      --seeds 4 --procs $P --out results_b2/
+      --seeds 4 --procs $P --out results_b2/plateau/
 done
 
 echo
@@ -47,7 +47,7 @@ echo "############ 3. the throat-radius window for the 2-cycle ############"
 for lam in 0.40 0.55 0.70 0.85 1.00; do
   echo "--- lam = $lam ---"
   python3 run_cobordism.py --N 80000 --seeds 4 --nL 150 --cap 12 \
-      --lam $lam --neck 1.5 --maxdim 2 --procs $P --out results_b2/ | tail -3
+      --lam $lam --neck 1.5 --maxdim 2 --procs $P --out results_b2/throat/ | tail -3
 done
 
 echo
@@ -58,12 +58,15 @@ echo "############ 4. THE RESULT: Delta beta measured directly ############"
 # (b2 = 1..12) while the after slice is already exact.
 # ~206 s per seed single-core, 0.31 GB peak.
 python3 run_cobordism.py --N 200000 --seeds 32 --nL 150 --cap 12 \
-    --lam 0.80 --neck 1.5 --maxdim 2 --procs $P --out results_b2/
-python3 run_cobordism.py --merge results_b2/
+    --lam 0.80 --neck 1.5 --maxdim 2 --procs $P --out results_b2/final/
+python3 run_cobordism.py --merge results_b2/final/
 
 echo
 echo "############ 5. summary ############"
-python3 run_b2.py --merge results_b2/
+python3 run_b2.py --merge results_b2/static/
+python3 run_b2.py --merge results_b2/plateau/
+echo "--- throat sweep ---"
+python3 run_cobordism.py --merge results_b2/throat/
 
 echo
 echo "Done.  Expect step 4 to report before=(1,0,0) after=(1,1,1), i.e."

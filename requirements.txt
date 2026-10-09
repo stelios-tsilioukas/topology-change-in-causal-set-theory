@@ -1,5 +1,6 @@
-# Core: cstopo3/ and cstopo/ need numpy alone.
-numpy>=1.24
+# Core: cstopo3/ and cstopo/ need numpy alone.  Both NumPy 1.x and 2.x work;
+# the one version-sensitive call (trapezoid/trapz) is bound at import time.
+numpy>=1.20
 
 # verification/ additionally needs:
 scipy>=1.10      # alpha_dep, bd_diag, csg, csg3, earlyde, gs, higgs, higgs_fix,

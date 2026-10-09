@@ -47,9 +47,11 @@ pip install -r requirements.txt
 ```
 
 `cstopo3` and `cstopo` need **numpy only**. Parts of `verification/` also use
-SciPy, GUDHI and SymPy; see [requirements.txt](requirements.txt). Python 3.9 or
-later. `mpi4py` is optional and is needed only to distribute seeds with `--mpi`;
-every script runs without it.
+SciPy, GUDHI and SymPy; see [requirements.txt](requirements.txt). Python 3.8 or
+later, and **either NumPy 1.x or 2.x** — the one version-sensitive call is bound
+at import time, so an Anaconda 3.8 install with NumPy 1.x works unchanged.
+`mpi4py` is optional and is needed only to distribute seeds with `--mpi`; every
+script runs without it.
 
 ## Run
 
@@ -255,11 +257,11 @@ Everything here runs on one core of an ordinary machine; no part of the
 repository needs a cluster. Last verified on a clean checkout with Python 3.11
 and the pinned minimum versions:
 
-| suite | result |
-|---|---|
-| `cstopo3/test_all.py` | all tests pass, ~2 min |
-| `cstopo/test_all.py` | all tests pass, seconds |
-| `verification/` (40 scripts) | all run to completion |
+| suite | NumPy 2.x | NumPy 1.26 |
+|---|---|---|
+| `cstopo3/test_all.py` | pass, ~2 min | pass |
+| `cstopo/test_all.py` | pass, seconds | pass |
+| `verification/` (40 scripts) | all run to completion | — |
 
 Six of the verification scripts take minutes rather than seconds, by nature
 rather than by defect: `bd_diag`, `bd_full` and `bd_handle` sprinkle and count

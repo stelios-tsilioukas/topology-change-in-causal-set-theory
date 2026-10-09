@@ -28,6 +28,9 @@ pipeline.
 from __future__ import annotations
 import numpy as np
 
+# np.trapezoid is the NumPy >= 2.0 spelling; np.trapz is the < 2.0 one, removed
+# in 2.0.  Bind whichever exists so the package runs on both generations.
+_trapezoid = getattr(np, "trapezoid", None) or np.trapz
 __all__ = ["S3", "S1xS2", "S3Warped", "Surgery", "Spacetime"]
 
 
@@ -121,7 +124,7 @@ class _Warped:
     @property
     def volume(self):
         psi = np.linspace(self.psi_lo, self.psi_hi, 40001)
-        return 4 * np.pi * self.R ** 3 * np.trapezoid(self.r(psi) ** 2, psi)
+        return 4 * np.pi * self.R ** 3 * _trapezoid(self.r(psi) ** 2, psi)
 
     def sample(self, n, rng):
         grid = np.linspace(self.psi_lo, self.psi_hi, 40001)

@@ -51,6 +51,10 @@ def one_seed(N, seed, nL, cap, lam, neck, T, tsplit, maxdim, verbose=False):
                 wall=time.time() - t0)
 
 
+def _one_seed_star(t):
+    return one_seed(*t)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--N", type=int, default=20000)
@@ -76,7 +80,7 @@ def main():
     if a.merge:
         rows = []
         for fn in sorted(os.listdir(a.merge)):
-            if fn.endswith(".json"):
+            if fn.startswith("cob_") and fn.endswith(".json"):
                 rows += json.load(open(os.path.join(a.merge, fn)))["rows"]
         det = sum(r["detected"] for r in rows)
         print(f"merged {len(rows)} runs from {a.merge}")
@@ -96,25 +100,47 @@ def main():
 
     args = [(a.N, s, a.nL, a.cap, a.lam, a.neck, a.T, a.tsplit, a.maxdim)
             for s in seeds]
+    tag = (f"N{a.N}_L{a.nL}_c{a.cap}_lam{a.lam:g}"
+           f"_neck{a.neck:g}_d{a.maxdim}")
+    part = None
+    if a.out:
+        os.makedirs(a.out, exist_ok=True)
+        part = os.path.join(a.out, f"cob_{tag}_task{a.task:04d}.partial.jsonl")
+        open(part, "w").close()
+
+    def record(r):
+        """Print a finished seed and append it to the partial file at once, so
+        that a dropped connection or a killed job loses nothing already done."""
+        print(f"  seed {r['seed']:4d}  before={r['beta_before']} "
+              f"after={r['beta_after']}  delta={r['delta']}  "
+              f"{'DETECTED' if r['detected'] else 'no'}  {r['wall']:.0f}s",
+              flush=True)
+        if part:
+            with open(part, "a") as fh:
+                fh.write(json.dumps(r) + "\n")
+                fh.flush()
+                os.fsync(fh.fileno())
+
+    rows = []
     if a.procs > 1:
         import multiprocessing as mp
         with mp.Pool(a.procs) as pool:
-            rows = pool.starmap(one_seed, args)
+            for r in pool.imap_unordered(_one_seed_star, args):
+                rows.append(r); record(r)
     else:
-        rows = [one_seed(*x, verbose=True) for x in args]
+        for x in args:
+            r = one_seed(*x, verbose=True); rows.append(r); record(r)
 
-    for r in rows:
-        print(f"  seed {r['seed']:4d}  before={r['beta_before']} "
-              f"after={r['beta_after']}  delta={r['delta']}  "
-              f"{'DETECTED' if r['detected'] else 'no'}  {r['wall']:.0f}s")
+    rows.sort(key=lambda r: r["seed"])
     det = sum(r["detected"] for r in rows)
     print(f"\n  detection rate: {det}/{len(rows)}")
 
     if a.out:
-        os.makedirs(a.out, exist_ok=True)
-        fn = os.path.join(a.out, f"cob_task{a.task:04d}.json")
+        fn = os.path.join(a.out, f"cob_{tag}_task{a.task:04d}.json")
         json.dump(dict(config=vars(a), rows=rows), open(fn, "w"), indent=1)
         print(f"  wrote {fn}")
+        if part and os.path.exists(part):
+            os.remove(part)
 
 
 if __name__ == "__main__":
